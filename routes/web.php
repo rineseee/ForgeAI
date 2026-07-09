@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/repositories/{repository}', [RepositoryController::class, 'show'])->name('repositories.show');
     Route::post('/repositories/{repository}/analyze', [AnalysisController::class, 'store'])->name('repositories.analyze');
     Route::get('/analyses', [AnalysisController::class, 'index'])->name('analyses.index');
+    Route::get('/analyses/{analysis}', [AnalysisController::class, 'show'])->name('analyses.show');
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 
     Route::get('/github/connect', [GithubConnectionController::class, 'redirect'])->name('github.connect');

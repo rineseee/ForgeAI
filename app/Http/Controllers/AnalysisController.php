@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Analysis;
 use App\Models\Repository;
+use App\Services\Analysis\RepositoryAnalysisService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -26,7 +27,7 @@ class AnalysisController extends Controller
         return view('analyses.index', compact('analyses'));
     }
 
-    public function store(Request $request, Repository $repository): RedirectResponse
+    public function store(Request $request, Repository $repository, RepositoryAnalysisService $analysisService): RedirectResponse
     {
         $team = $request->user()->currentTeam;
 
@@ -34,14 +35,27 @@ class AnalysisController extends Controller
             throw new NotFoundHttpException;
         }
 
-        Analysis::create([
-            'repository_id' => $repository->id,
-            'type' => 'quality',
-            'status' => 'queued',
-            'triggered_by_user_id' => $request->user()->id,
-        ]);
+        $analysis = $analysisService->run($repository, $request->user());
+
+        if ($analysis->status === 'failed') {
+            return redirect()->route('repositories.show', $repository)
+                ->with('status', 'Analysis failed: '.$analysis->failure_reason);
+        }
 
         return redirect()->route('repositories.show', $repository)
-            ->with('status', 'Analysis queued. This may take a few minutes.');
+            ->with('status', 'Analysis completed.');
+    }
+
+    public function show(Request $request, Analysis $analysis): View
+    {
+        $team = $request->user()->currentTeam;
+
+        if (! $team || $analysis->repository->team_id !== $team->id) {
+            throw new NotFoundHttpException;
+        }
+
+        $analysis->load('repository', 'categories', 'triggeredBy');
+
+        return view('analyses.show', compact('analysis'));
     }
 }

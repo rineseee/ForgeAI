@@ -81,7 +81,7 @@ class RepositoryShowTest extends TestCase
         $response->assertNotFound();
     }
 
-    public function test_analyze_repository_queues_an_analysis(): void
+    public function test_analyze_repository_creates_an_analysis_run(): void
     {
         $user = $this->userWithTeam();
         $repository = Repository::factory()->create(['team_id' => $user->currentTeam->id]);
@@ -91,7 +91,6 @@ class RepositoryShowTest extends TestCase
         $response->assertRedirect(route('repositories.show', $repository));
         $this->assertDatabaseHas('analyses', [
             'repository_id' => $repository->id,
-            'status' => 'queued',
             'triggered_by_user_id' => $user->id,
         ]);
     }

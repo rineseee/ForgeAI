@@ -2,14 +2,19 @@
 $typeLabels = [
     'code_review' => 'Code Review',
     'security' => 'Security',
-    'quality' => 'Code Quality',
+    'quality' => 'Full Analysis',
     'tech_debt' => 'Technical Debt',
     'documentation' => 'Documentation',
 ];
+$hasCategories = $lastAnalysis && $lastAnalysis->categories->isNotEmpty();
 $debtScore = optional($lastAnalysis?->metrics->firstWhere('metric_key', 'debt_score'))->metric_value['value'] ?? null;
 $complexityScore = optional($lastAnalysis?->metrics->firstWhere('metric_key', 'complexity_score'))->metric_value['value'] ?? null;
 $duplicationPct = optional($lastAnalysis?->metrics->firstWhere('metric_key', 'duplication_percent'))->metric_value['value'] ?? null;
-$qualityScore = $debtScore !== null ? round(100 - $debtScore, 1) : null;
+$qualityScore = match (true) {
+    $hasCategories => round($lastAnalysis->categories->avg('score')),
+    $debtScore !== null => round(100 - $debtScore, 1),
+    default => null,
+};
 @endphp
 
 <x-app-layout>
@@ -97,7 +102,7 @@ $qualityScore = $debtScore !== null ? round(100 - $debtScore, 1) : null;
                         @if ($lastAnalysis)
                             <div class="flex flex-col gap-6 sm:flex-row sm:items-center">
                                 @if ($qualityScore !== null)
-                                    <x-dashboard.score-ring :score="$qualityScore" size="88" label="Quality" />
+                                    <x-dashboard.score-ring :score="$qualityScore" size="88" label="Overall" />
                                 @endif
 
                                 <div class="min-w-0 flex-1 space-y-3">
@@ -116,11 +121,28 @@ $qualityScore = $debtScore !== null ? round(100 - $debtScore, 1) : null;
                                         @endif
                                     </p>
 
-                                    @if ($complexityScore !== null)
-                                        <x-dashboard.progress-bar :value="$complexityScore" label="Complexity" color="bg-amber-500" />
+                                    @if ($hasCategories)
+                                        <div class="flex flex-wrap gap-2">
+                                            @foreach ($lastAnalysis->categories as $category)
+                                                <span class="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                                                    {{ \App\Models\AnalysisCategory::LABELS[$category->category] ?? $category->category }}: {{ $category->score }}
+                                                </span>
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        @if ($complexityScore !== null)
+                                            <x-dashboard.progress-bar :value="$complexityScore" label="Complexity" color="bg-amber-500" />
+                                        @endif
+                                        @if ($duplicationPct !== null)
+                                            <x-dashboard.progress-bar :value="$duplicationPct" label="Duplication" color="bg-red-500" />
+                                        @endif
                                     @endif
-                                    @if ($duplicationPct !== null)
-                                        <x-dashboard.progress-bar :value="$duplicationPct" label="Duplication" color="bg-red-500" />
+
+                                    @if ($lastAnalysis->status !== 'running')
+                                        <a href="{{ route('analyses.show', $lastAnalysis) }}" class="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+                                            {{ __('View full report') }}
+                                            <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+                                        </a>
                                     @endif
                                 </div>
                             </div>

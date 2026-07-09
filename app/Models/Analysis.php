@@ -50,4 +50,9 @@ class Analysis extends Model
     {
         return $this->hasMany(AnalysisMetric::class);
     }
+
+    public function categories(): HasMany
+    {
+        return $this->hasMany(AnalysisCategory::class);
+    }
 }

@@ -66,9 +66,9 @@ class RepositoryController extends Controller
             ->get();
 
         $lastAnalysis = $repository->analyses()
-            ->with('metrics')
+            ->with('metrics', 'categories')
             ->withCount(['findings as critical_findings_count' => fn ($q) => $q->whereIn('severity', ['critical', 'high'])])
-            ->latest('completed_at')
+            ->latest('id')
             ->first();
 
         return view('repositories.show', [
