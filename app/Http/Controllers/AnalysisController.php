@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Analysis;
 use App\Models\Repository;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AnalysisController extends Controller
 {
@@ -22,5 +24,24 @@ class AnalysisController extends Controller
             ->paginate(15);
 
         return view('analyses.index', compact('analyses'));
+    }
+
+    public function store(Request $request, Repository $repository): RedirectResponse
+    {
+        $team = $request->user()->currentTeam;
+
+        if (! $team || $repository->team_id !== $team->id) {
+            throw new NotFoundHttpException;
+        }
+
+        Analysis::create([
+            'repository_id' => $repository->id,
+            'type' => 'quality',
+            'status' => 'queued',
+            'triggered_by_user_id' => $request->user()->id,
+        ]);
+
+        return redirect()->route('repositories.show', $repository)
+            ->with('status', 'Analysis queued. This may take a few minutes.');
     }
 }

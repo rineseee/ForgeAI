@@ -7,6 +7,7 @@ use App\Models\Repository;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RepositoryController extends Controller
 {
@@ -42,5 +43,39 @@ class RepositoryController extends Controller
 
         return redirect()->route('repositories.index')
             ->with('status', "Synced {$count} repositories from GitHub.");
+    }
+
+    public function show(Request $request, Repository $repository): View
+    {
+        $team = $request->user()->currentTeam;
+
+        if (! $team || $repository->team_id !== $team->id) {
+            throw new NotFoundHttpException;
+        }
+
+        $repository->loadCount('analyses', 'pullRequests', 'commits');
+
+        $branches = $repository->branches()
+            ->orderByDesc('is_default')
+            ->orderBy('name')
+            ->get();
+
+        $recentCommits = $repository->commits()
+            ->orderByDesc('committed_at')
+            ->take(10)
+            ->get();
+
+        $lastAnalysis = $repository->analyses()
+            ->with('metrics')
+            ->withCount(['findings as critical_findings_count' => fn ($q) => $q->whereIn('severity', ['critical', 'high'])])
+            ->latest('completed_at')
+            ->first();
+
+        return view('repositories.show', [
+            'repository' => $repository,
+            'branches' => $branches,
+            'recentCommits' => $recentCommits,
+            'lastAnalysis' => $lastAnalysis,
+        ]);
     }
 }

@@ -1,6 +1,9 @@
 @props(['repository'])
 
-<div class="flex items-center justify-between gap-4 px-5 py-4 transition-colors duration-150 hover:bg-slate-50 dark:hover:bg-slate-800/60">
+<a
+    href="{{ route('repositories.show', $repository) }}"
+    class="flex items-center justify-between gap-4 px-5 py-4 transition-colors duration-150 hover:bg-slate-50 dark:hover:bg-slate-800/60"
+>
     <div class="flex min-w-0 items-center gap-3">
         <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-900 text-white dark:bg-slate-700">
             <svg class="h-4.5 w-4.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -10,18 +13,10 @@
 
         <div class="min-w-0">
             <div class="flex items-center gap-2">
-                @if ($repository->html_url)
-                    <a
-                        href="{{ $repository->html_url }}" target="_blank" rel="noopener noreferrer"
-                        @if ($repository->description) title="{{ $repository->description }}" @endif
-                        class="truncate text-sm font-semibold text-slate-900 hover:text-indigo-600 dark:text-white dark:hover:text-indigo-400"
-                    >{{ $repository->full_name }}</a>
-                @else
-                    <p
-                        @if ($repository->description) title="{{ $repository->description }}" @endif
-                        class="truncate text-sm font-semibold text-slate-900 dark:text-white"
-                    >{{ $repository->full_name }}</p>
-                @endif
+                <p
+                    @if ($repository->description) title="{{ $repository->description }}" @endif
+                    class="truncate text-sm font-semibold text-slate-900 dark:text-white"
+                >{{ $repository->full_name }}</p>
                 @if ($repository->is_private)
                     <span class="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-500 dark:bg-slate-700 dark:text-slate-300">Private</span>
                 @endif
@@ -44,4 +39,4 @@
             <span class="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400">Clean</span>
         @endif
     </div>
-</div>
+</a>
