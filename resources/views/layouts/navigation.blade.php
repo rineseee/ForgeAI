@@ -1,4 +1,4 @@
-<header class="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-4 border-b border-slate-200 bg-white/80 px-4 backdrop-blur-md sm:px-6 lg:px-8 dark:border-slate-800 dark:bg-slate-900/80">
+<header class="sticky top-0 z-30 flex h-16 shrink-0 items-center gap-4 border-b border-slate-200 bg-white/80 px-4 backdrop-blur-md print:hidden sm:px-6 lg:px-8 dark:border-slate-800 dark:bg-slate-900/80">
     <!-- Mobile: hamburger + compact brand -->
     <button
         x-on:click="sidebarOpen = true"

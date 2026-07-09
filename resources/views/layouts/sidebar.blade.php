@@ -22,7 +22,7 @@
     x-transition:leave="transition ease-in duration-150"
     x-transition:leave-start="translate-x-0"
     x-transition:leave-end="-translate-x-full"
-    class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-slate-200 bg-white lg:hidden dark:border-slate-800 dark:bg-slate-900"
+    class="fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-slate-200 bg-white print:hidden lg:hidden dark:border-slate-800 dark:bg-slate-900"
     style="display: none;"
     x-cloak
 >
@@ -31,7 +31,7 @@
 
 <!-- Desktop static sidebar -->
 <aside
-    class="hidden shrink-0 flex-col border-r border-slate-200 bg-white transition-all duration-200 ease-in-out lg:flex dark:border-slate-800 dark:bg-slate-900"
+    class="hidden shrink-0 flex-col border-r border-slate-200 bg-white transition-all duration-200 ease-in-out print:hidden lg:flex dark:border-slate-800 dark:bg-slate-900"
     :class="sidebarCollapsed ? 'lg:w-20' : 'lg:w-64'"
 >
     @include('layouts.partials.sidebar-content', ['collapsible' => true])
