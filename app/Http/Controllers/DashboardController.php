@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\ActivityLogEntry;
 use App\Models\Analysis;
-use App\Models\AnalysisFinding;
-use App\Models\AnalysisMetric;
-use App\Models\Report;
+use App\Models\AnalysisCategory;
 use App\Models\Repository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -20,50 +19,58 @@ class DashboardController extends Controller
         if (! $team) {
             return view('dashboard', [
                 'team' => null,
-                'stats' => ['repositories' => 0, 'analyses' => 0, 'criticalFindings' => 0, 'reports' => 0],
+                'stats' => [
+                    'repositories' => 0, 'analyses' => 0, 'reports' => 0,
+                    'healthScore' => 0, 'securityScore' => 0, 'codeQualityScore' => 0, 'technicalDebtScore' => 0,
+                ],
                 'repositories' => collect(),
                 'recentAnalyses' => collect(),
                 'recentActivity' => collect(),
                 'recentReports' => collect(),
                 'analysisTypeSummary' => collect(),
-                'severityBreakdown' => collect(),
-                'qualityScore' => 0,
+                'repositoryDistribution' => collect(),
+                'analysisHistory' => collect(),
             ]);
         }
 
         $repositoryIds = Repository::query()->where('team_id', $team->id)->pluck('id');
         $analysisIds = Analysis::query()->whereIn('repository_id', $repositoryIds)->pluck('id');
 
+        // "Latest analysis per repository" keeps health scores current —
+        // older re-runs of the same repository don't drag the average down.
+        $latestAnalysisIds = Analysis::query()
+            ->whereIn('repository_id', $repositoryIds)
+            ->where('status', 'completed')
+            ->whereHas('categories')
+            ->select('repository_id', DB::raw('MAX(id) as id'))
+            ->groupBy('repository_id')
+            ->pluck('id');
+
+        $latestCategories = AnalysisCategory::query()
+            ->whereIn('analysis_id', $latestAnalysisIds)
+            ->get();
+
         $stats = [
             'repositories' => $repositoryIds->count(),
             'analyses' => $analysisIds->count(),
-            'criticalFindings' => AnalysisFinding::query()
-                ->whereIn('analysis_id', $analysisIds)
-                ->whereIn('severity', ['critical', 'high'])
-                ->where('status', 'open')
-                ->count(),
-            'reports' => Report::query()->where('team_id', $team->id)->count(),
+            'reports' => $latestAnalysisIds->count(),
+            'healthScore' => $latestCategories->isNotEmpty() ? round($latestCategories->avg('score')) : 0,
+            'securityScore' => $this->averageFor($latestCategories, 'security'),
+            'codeQualityScore' => $this->averageFor($latestCategories, 'code_quality'),
+            'technicalDebtScore' => $this->averageFor($latestCategories, 'technical_debt'),
         ];
 
         $repositories = Repository::query()
             ->where('team_id', $team->id)
             ->withCount('analyses', 'pullRequests')
-            ->withCount(['analyses as findings_count' => function ($query) {
-                $query->join('analysis_findings', 'analysis_findings.analysis_id', '=', 'analyses.id')
-                    ->whereIn('analysis_findings.severity', ['critical', 'high'])
-                    ->where('analysis_findings.status', 'open');
-            }])
             ->orderByDesc('last_synced_at')
             ->take(6)
             ->get();
 
         $recentAnalyses = Analysis::query()
             ->whereIn('repository_id', $repositoryIds)
-            ->with('repository')
-            ->withCount([
-                'findings as critical_findings_count' => fn ($q) => $q->whereIn('severity', ['critical', 'high']),
-            ])
-            ->latest('completed_at')
+            ->with('repository', 'categories')
+            ->latest('id')
             ->take(6)
             ->get();
 
@@ -74,41 +81,47 @@ class DashboardController extends Controller
             ->take(8)
             ->get();
 
-        $recentReports = Report::query()
-            ->where('team_id', $team->id)
-            ->with('repository')
-            ->latest('generated_at')
+        $recentReports = Analysis::query()
+            ->whereIn('id', $latestAnalysisIds)
+            ->with('repository', 'categories')
+            ->latest('completed_at')
             ->take(4)
             ->get();
 
-        // Additive, read-only aggregates powering the AI Analysis Summary /
-        // Security Overview / Code Quality Overview dashboard widgets.
         $analysisTypeSummary = Analysis::query()
             ->whereIn('repository_id', $repositoryIds)
             ->selectRaw('type, count(*) as total')
             ->groupBy('type')
             ->pluck('total', 'type');
 
-        $severityBreakdown = AnalysisFinding::query()
-            ->whereIn('analysis_id', $analysisIds)
-            ->where('status', 'open')
-            ->selectRaw('severity, count(*) as total')
-            ->groupBy('severity')
-            ->pluck('total', 'severity');
+        $repositoryDistribution = Repository::query()
+            ->where('team_id', $team->id)
+            ->whereNotNull('language')
+            ->selectRaw('language, count(*) as total')
+            ->groupBy('language')
+            ->orderByDesc('total')
+            ->pluck('total', 'language');
 
-        $avgDebtScore = (float) (AnalysisMetric::query()
-            ->whereIn('analysis_id', $analysisIds)
-            ->where('metric_key', 'debt_score')
-            ->get()
-            ->avg(fn ($metric) => $metric->metric_value['value'] ?? null) ?? 0);
-
-        // Debt score is 0-100 where higher means more debt; invert for a
-        // "quality score" ring where higher is better.
-        $qualityScore = round(100 - $avgDebtScore, 1);
+        $analysisHistory = Analysis::query()
+            ->whereIn('repository_id', $repositoryIds)
+            ->where('status', 'completed')
+            ->whereNotNull('completed_at')
+            ->where('completed_at', '>=', now()->subWeeks(8))
+            ->selectRaw("strftime('%Y-%W', completed_at) as period, count(*) as total")
+            ->groupBy('period')
+            ->orderBy('period')
+            ->pluck('total', 'period');
 
         return view('dashboard', compact(
             'team', 'stats', 'repositories', 'recentAnalyses', 'recentActivity', 'recentReports',
-            'analysisTypeSummary', 'severityBreakdown', 'qualityScore',
+            'analysisTypeSummary', 'repositoryDistribution', 'analysisHistory',
         ));
+    }
+
+    private function averageFor($categories, string $key): int
+    {
+        $matching = $categories->where('category', $key);
+
+        return $matching->isNotEmpty() ? (int) round($matching->avg('score')) : 0;
     }
 }

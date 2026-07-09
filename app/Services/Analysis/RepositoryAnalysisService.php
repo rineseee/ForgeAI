@@ -2,6 +2,7 @@
 
 namespace App\Services\Analysis;
 
+use App\Models\ActivityLogEntry;
 use App\Models\Analysis;
 use App\Models\AnalysisCategory;
 use App\Models\Repository;
@@ -59,6 +60,15 @@ class RepositoryAnalysisService
                     'completed_at' => now(),
                 ]);
             });
+
+            ActivityLogEntry::create([
+                'team_id' => $repository->team_id,
+                'user_id' => $triggeringUser->id,
+                'action' => 'analysis.completed',
+                'subject_type' => Analysis::class,
+                'subject_id' => $analysis->id,
+                'properties' => ['name' => $repository->full_name],
+            ]);
         } catch (Throwable $e) {
             $analysis->update([
                 'status' => 'failed',

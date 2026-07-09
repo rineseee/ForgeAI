@@ -39,7 +39,7 @@ class RepositoryController extends Controller
                 ->with('status', 'Connect your GitHub account before syncing repositories.');
         }
 
-        $count = $syncGithubRepositories->handle($team, $connection);
+        $count = $syncGithubRepositories->handle($team, $connection, $user);
 
         return redirect()->route('repositories.index')
             ->with('status', "Synced {$count} repositories from GitHub.");

@@ -19,9 +19,8 @@ class AnalysisController extends Controller
 
         $analyses = Analysis::query()
             ->whereIn('repository_id', $repositoryIds)
-            ->with('repository')
-            ->withCount(['findings as critical_findings_count' => fn ($q) => $q->whereIn('severity', ['critical', 'high'])])
-            ->latest('completed_at')
+            ->with('repository', 'categories')
+            ->latest('id')
             ->paginate(15);
 
         return view('analyses.index', compact('analyses'));

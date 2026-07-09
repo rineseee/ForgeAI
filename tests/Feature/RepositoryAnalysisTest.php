@@ -90,6 +90,12 @@ class RepositoryAnalysisTest extends TestCase
 
         $analysis = $repository->analyses()->latest('id')->first();
         $this->assertCount(6, $analysis->categories);
+
+        $this->assertDatabaseHas('activity_logs', [
+            'team_id' => $user->currentTeam->id,
+            'action' => 'analysis.completed',
+            'subject_id' => $analysis->id,
+        ]);
         $this->assertSame(78, $analysis->categories->firstWhere('category', 'security')->score);
 
         Http::assertSent(function ($request) {

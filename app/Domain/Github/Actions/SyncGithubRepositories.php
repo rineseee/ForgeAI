@@ -2,9 +2,11 @@
 
 namespace App\Domain\Github\Actions;
 
+use App\Models\ActivityLogEntry;
 use App\Models\GithubConnection;
 use App\Models\Repository;
 use App\Models\Team;
+use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
@@ -16,7 +18,7 @@ class SyncGithubRepositories
      *
      * @return int number of repositories imported/updated
      */
-    public function handle(Team $team, GithubConnection $connection): int
+    public function handle(Team $team, GithubConnection $connection, ?User $triggeredBy = null): int
     {
         $count = 0;
         $page = 1;
@@ -38,7 +40,7 @@ class SyncGithubRepositories
             $repos = $response->json();
 
             foreach ($repos as $repo) {
-                $this->upsert($team, $repo);
+                $this->upsert($team, $repo, $triggeredBy);
                 $count++;
             }
 
@@ -48,7 +50,7 @@ class SyncGithubRepositories
         return $count;
     }
 
-    private function upsert(Team $team, array $repo): void
+    private function upsert(Team $team, array $repo, ?User $triggeredBy): void
     {
         $repository = Repository::updateOrCreate(
             [
@@ -74,5 +76,16 @@ class SyncGithubRepositories
             ['name' => $repository->default_branch],
             ['is_default' => true]
         );
+
+        if ($repository->wasRecentlyCreated) {
+            ActivityLogEntry::create([
+                'team_id' => $team->id,
+                'user_id' => $triggeredBy?->id,
+                'action' => 'repository.imported',
+                'subject_type' => Repository::class,
+                'subject_id' => $repository->id,
+                'properties' => ['name' => $repository->full_name],
+            ]);
+        }
     }
 }
