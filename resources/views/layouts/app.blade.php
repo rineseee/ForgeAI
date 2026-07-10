@@ -41,5 +41,7 @@
                 </main>
             </div>
         </div>
+
+        @include('partials.toast-container')
     </body>
 </html>

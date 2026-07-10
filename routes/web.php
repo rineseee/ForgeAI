@@ -3,6 +3,7 @@
 use App\Http\Controllers\AnalysisController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GithubConnectionController;
+use App\Http\Controllers\PreferencesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RepositoryController;
@@ -34,6 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::patch('/profile/preferences/ai', [PreferencesController::class, 'updateAi'])->name('preferences.ai.update');
+    Route::patch('/profile/preferences/theme', [PreferencesController::class, 'updateTheme'])->name('preferences.theme.update');
+    Route::patch('/profile/preferences/notifications', [PreferencesController::class, 'updateNotifications'])->name('preferences.notifications.update');
 });
 
 require __DIR__.'/auth.php';

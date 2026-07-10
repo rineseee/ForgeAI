@@ -16,6 +16,18 @@
             </div>
 
             <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5 sm:p-8 dark:bg-slate-900 dark:ring-slate-800">
+                @include('profile.partials.ai-preferences-form')
+            </div>
+
+            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5 sm:p-8 dark:bg-slate-900 dark:ring-slate-800">
+                @include('profile.partials.theme-preferences-form')
+            </div>
+
+            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5 sm:p-8 dark:bg-slate-900 dark:ring-slate-800">
+                @include('profile.partials.notification-preferences-form')
+            </div>
+
+            <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-slate-900/5 sm:p-8 dark:bg-slate-900 dark:ring-slate-800">
                 @include('profile.partials.update-password-form')
             </div>
 

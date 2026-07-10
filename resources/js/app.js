@@ -20,6 +20,28 @@ Alpine.store('theme', {
     },
 });
 
+Alpine.store('toasts', {
+    items: [],
+
+    push(type, message, duration = 5000) {
+        const id = Date.now() + Math.random();
+        this.items.push({ id, type, message });
+
+        if (duration > 0) {
+            setTimeout(() => this.dismiss(id), duration);
+        }
+    },
+
+    dismiss(id) {
+        this.items = this.items.filter((item) => item.id !== id);
+    },
+});
+
+window.addEventListener('toast', (event) => {
+    const { type, message, duration } = event.detail;
+    Alpine.store('toasts').push(type, message, duration);
+});
+
 Alpine.start();
 
 document.addEventListener('DOMContentLoaded', () => Prism.highlightAll());
