@@ -119,20 +119,6 @@
         </div>
     </section>
 
-    {{-- ============ TRUSTED BY ============ --}}
-    <section class="border-y border-slate-200 bg-slate-50/60 py-10 dark:border-slate-800 dark:bg-slate-900/40">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                Trusted by engineering teams at
-            </p>
-            <div class="mt-6 grid grid-cols-2 items-center justify-items-center gap-8 sm:grid-cols-3 lg:grid-cols-6">
-                @foreach (['Northwind', 'Initech', 'Globex', 'Hooli', 'Umbrella', 'Stark Labs'] as $company)
-                    <span class="select-none text-lg font-bold tracking-tight text-slate-400 grayscale transition hover:text-slate-500 dark:text-slate-600 dark:hover:text-slate-400">{{ $company }}</span>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
     {{-- ============ FEATURES ============ --}}
     <section id="features" class="py-24">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -324,41 +310,6 @@
                                 </li>
                             @endforeach
                         </ul>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-    {{-- ============ TESTIMONIALS ============ --}}
-    <section class="py-24">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="mx-auto max-w-2xl text-center">
-                <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Loved by engineering teams</h2>
-            </div>
-
-            <div class="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-3">
-                @foreach ([
-                    ['name' => 'Amara Okafor', 'role' => 'Staff Engineer, Northwind', 'quote' => 'Forge AI caught a SQL injection risk in a PR three reviewers had already approved. It paid for itself in the first week.'],
-                    ['name' => 'Daniel Kessler', 'role' => 'VP Engineering, Initech', 'quote' => 'The technical debt scoring gave us a real backlog instead of a vague feeling that "the code is bad somewhere."'],
-                    ['name' => 'Priya Raman', 'role' => 'Lead Developer, Globex', 'quote' => 'Our onboarding time dropped noticeably once new hires had AI-generated docs to read instead of asking around Slack.'],
-                ] as $t)
-                    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                        <div class="flex gap-1 text-amber-400">
-                            @for ($i = 0; $i < 5; $i++)
-                                <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.958a1 1 0 00.95.69h4.162c.969 0 1.371 1.24.588 1.81l-3.368 2.447a1 1 0 00-.363 1.118l1.287 3.957c.3.922-.755 1.688-1.54 1.118l-3.367-2.446a1 1 0 00-1.176 0l-3.367 2.446c-.784.57-1.838-.196-1.539-1.118l1.287-3.957a1 1 0 00-.363-1.118L2.05 9.385c-.783-.57-.38-1.81.588-1.81h4.163a1 1 0 00.95-.69l1.286-3.958z"/></svg>
-                            @endfor
-                        </div>
-                        <p class="mt-4 text-sm leading-relaxed text-slate-700 dark:text-slate-300">&ldquo;{{ $t['quote'] }}&rdquo;</p>
-                        <div class="mt-6 flex items-center gap-3">
-                            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-slate-500 to-slate-600 text-sm font-semibold text-white">
-                                {{ collect(explode(' ', $t['name']))->map(fn ($p) => $p[0])->join('') }}
-                            </span>
-                            <div>
-                                <p class="text-sm font-semibold">{{ $t['name'] }}</p>
-                                <p class="text-xs text-slate-500 dark:text-slate-400">{{ $t['role'] }}</p>
-                            </div>
-                        </div>
                     </div>
                 @endforeach
             </div>
