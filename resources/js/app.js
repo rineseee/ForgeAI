@@ -1,14 +1,29 @@
 import Alpine from 'alpinejs';
-import Chart from 'chart.js/auto';
-import Prism from 'prismjs';
-import 'prismjs/components/prism-clike';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-php';
-import 'prismjs/components/prism-diff';
+import {
+    Chart,
+    BarController,
+    DoughnutController,
+    ArcElement,
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    Legend,
+    Tooltip,
+} from 'chart.js';
+
+Chart.register(
+    BarController,
+    DoughnutController,
+    ArcElement,
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    Legend,
+    Tooltip
+);
 
 window.Alpine = Alpine;
 window.Chart = Chart;
-window.Prism = Prism;
 
 Alpine.store('theme', {
     dark: document.documentElement.classList.contains('dark'),
@@ -44,4 +59,18 @@ window.addEventListener('toast', (event) => {
 
 Alpine.start();
 
-document.addEventListener('DOMContentLoaded', () => Prism.highlightAll());
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.querySelector('pre code')) {
+        import('prismjs').then(({ default: Prism }) => {
+            Promise.all([
+                import('prismjs/components/prism-clike'),
+                import('prismjs/components/prism-javascript'),
+                import('prismjs/components/prism-php'),
+                import('prismjs/components/prism-diff'),
+            ]).then(() => {
+                window.Prism = Prism;
+                Prism.highlightAll();
+            });
+        });
+    }
+});

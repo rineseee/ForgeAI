@@ -34,6 +34,11 @@ class Repository extends Model
         return $this->belongsTo(Team::class);
     }
 
+    public function belongsToTeam(?Team $team): bool
+    {
+        return $team !== null && $this->team_id === $team->id;
+    }
+
     public function branches(): HasMany
     {
         return $this->hasMany(RepositoryBranch::class);

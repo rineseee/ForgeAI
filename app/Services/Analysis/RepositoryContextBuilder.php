@@ -4,7 +4,10 @@ namespace App\Services\Analysis;
 
 use App\Models\Repository;
 use App\Models\User;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
@@ -21,6 +24,8 @@ class RepositoryContextBuilder
 
     private const MAX_TOTAL_CHARS = 40000;
 
+    private const CACHE_TTL_SECONDS = 300;
+
     private const ALLOWED_EXTENSIONS = [
         'php', 'js', 'jsx', 'ts', 'tsx', 'vue', 'py', 'rb', 'go', 'java',
         'cs', 'cpp', 'c', 'h', 'hpp', 'rs', 'kt', 'swift', 'blade.php',
@@ -32,9 +37,9 @@ class RepositoryContextBuilder
         'storage/framework/', 'public/build/', 'package-lock.json', 'composer.lock',
     ];
 
-    public function build(Repository $repository, ?User $triggeringUser = null): array
+    public function build(Repository $repository, ?User $triggeringUser = null, bool $includeSource = true): array
     {
-        $token = $this->resolveAccessToken($repository, $triggeringUser);
+        $token = $includeSource ? $this->resolveAccessToken($repository, $triggeringUser) : null;
 
         return [
             'metadata' => $this->metadata($repository),
@@ -75,8 +80,8 @@ class RepositoryContextBuilder
     {
         $owner = $repository->team?->owner;
 
-        $connection = $owner?->githubConnections()->latest('connected_at')->first()
-            ?? $triggeringUser?->githubConnections()->latest('connected_at')->first();
+        $connection = $owner?->latestGithubConnection()
+            ?? $triggeringUser?->latestGithubConnection();
 
         return $connection?->access_token;
     }
@@ -123,28 +128,56 @@ class RepositoryContextBuilder
 
     private function fetchTree(Repository $repository, string $token): ?array
     {
-        $response = Http::withToken($token)
-            ->acceptJson()
-            ->timeout(30)
-            ->get("https://api.github.com/repos/{$repository->full_name}/git/trees/{$repository->default_branch}", [
-                'recursive' => 1,
-            ]);
+        $cacheKey = "github:tree:{$repository->full_name}:{$repository->default_branch}";
+
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
+        try {
+            $response = Http::withToken($token)
+                ->acceptJson()
+                ->timeout(30)
+                ->get("https://api.github.com/repos/{$repository->full_name}/git/trees/{$repository->default_branch}", [
+                    'recursive' => 1,
+                ]);
+        } catch (ConnectionException $e) {
+            Log::warning("GitHub tree fetch failed for {$repository->full_name}: {$e->getMessage()}");
+
+            return null;
+        }
 
         if ($response->failed()) {
             return null;
         }
 
-        return $response->json('tree') ?? [];
+        $tree = $response->json('tree') ?? [];
+
+        Cache::put($cacheKey, $tree, self::CACHE_TTL_SECONDS);
+
+        return $tree;
     }
 
     private function fetchFileContent(Repository $repository, string $path, string $token): ?string
     {
-        $response = Http::withToken($token)
-            ->acceptJson()
-            ->timeout(20)
-            ->get("https://api.github.com/repos/{$repository->full_name}/contents/{$path}", [
-                'ref' => $repository->default_branch,
-            ]);
+        $cacheKey = "github:file:{$repository->full_name}:{$repository->default_branch}:{$path}";
+
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
+        try {
+            $response = Http::withToken($token)
+                ->acceptJson()
+                ->timeout(20)
+                ->get("https://api.github.com/repos/{$repository->full_name}/contents/{$path}", [
+                    'ref' => $repository->default_branch,
+                ]);
+        } catch (ConnectionException $e) {
+            Log::warning("GitHub file fetch failed for {$repository->full_name}/{$path}: {$e->getMessage()}");
+
+            return null;
+        }
 
         if ($response->failed()) {
             return null;
@@ -157,7 +190,11 @@ class RepositoryContextBuilder
             return null;
         }
 
-        return $encoding === 'base64' ? base64_decode($content) : $content;
+        $content = $encoding === 'base64' ? base64_decode($content) : $content;
+
+        Cache::put($cacheKey, $content, self::CACHE_TTL_SECONDS);
+
+        return $content;
     }
 
     private function isEligible(string $path): bool

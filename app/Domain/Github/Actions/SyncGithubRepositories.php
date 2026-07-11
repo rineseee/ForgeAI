@@ -2,9 +2,7 @@
 
 namespace App\Domain\Github\Actions;
 
-use App\Models\ActivityLogEntry;
 use App\Models\GithubConnection;
-use App\Models\Repository;
 use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
@@ -12,6 +10,10 @@ use RuntimeException;
 
 class SyncGithubRepositories
 {
+    public function __construct(
+        private readonly UpsertGithubRepository $upsertGithubRepository,
+    ) {}
+
     /**
      * Pulls every repository the connected GitHub account can see and
      * upserts it (plus its default branch) into the given team.
@@ -40,7 +42,7 @@ class SyncGithubRepositories
             $repos = $response->json();
 
             foreach ($repos as $repo) {
-                $this->upsert($team, $repo, $triggeredBy);
+                $this->upsertGithubRepository->handle($team, $repo, $triggeredBy);
                 $count++;
             }
 
@@ -48,44 +50,5 @@ class SyncGithubRepositories
         } while (count($repos) === 100);
 
         return $count;
-    }
-
-    private function upsert(Team $team, array $repo, ?User $triggeredBy): void
-    {
-        $repository = Repository::updateOrCreate(
-            [
-                'team_id' => $team->id,
-                'github_repo_id' => $repo['id'],
-            ],
-            [
-                'name' => $repo['name'],
-                'full_name' => $repo['full_name'],
-                'description' => $repo['description'],
-                'owner' => $repo['owner']['login'] ?? null,
-                'default_branch' => $repo['default_branch'] ?? 'main',
-                'is_private' => (bool) $repo['private'],
-                'visibility' => $repo['visibility'] ?? ($repo['private'] ? 'private' : 'public'),
-                'html_url' => $repo['html_url'],
-                'language' => $repo['language'],
-                'last_synced_at' => now(),
-                'github_updated_at' => $repo['updated_at'] ?? null,
-            ]
-        );
-
-        $repository->branches()->updateOrCreate(
-            ['name' => $repository->default_branch],
-            ['is_default' => true]
-        );
-
-        if ($repository->wasRecentlyCreated) {
-            ActivityLogEntry::create([
-                'team_id' => $team->id,
-                'user_id' => $triggeredBy?->id,
-                'action' => 'repository.imported',
-                'subject_type' => Repository::class,
-                'subject_id' => $repository->id,
-                'properties' => ['name' => $repository->full_name],
-            ]);
-        }
     }
 }

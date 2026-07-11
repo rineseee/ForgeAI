@@ -20,6 +20,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
 Route::middleware('auth')->group(function () {
     Route::get('/repositories', [RepositoryController::class, 'index'])->name('repositories.index');
     Route::post('/repositories/sync', [RepositoryController::class, 'sync'])->name('repositories.sync');
+    Route::post('/repositories/import', [RepositoryController::class, 'import'])
+        ->middleware('throttle:20,1')
+        ->name('repositories.import');
     Route::get('/repositories/{repository}', [RepositoryController::class, 'show'])->name('repositories.show');
     Route::post('/repositories/{repository}/analyze', [AnalysisController::class, 'store'])->name('repositories.analyze');
     Route::get('/analyses', [AnalysisController::class, 'index'])->name('analyses.index');

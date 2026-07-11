@@ -58,7 +58,7 @@
                     </ul>
                 </div>
 
-                <p class="relative text-xs text-indigo-200">&copy; {{ date('Y') }} Forge AI. All rights reserved.</p>
+                <p class="relative text-xs text-indigo-200">&copy; {{ date('Y') }} Rinesa Krasniqi. All rights reserved.</p>
             </div>
 
             <!-- Form panel -->

@@ -1,4 +1,4 @@
-@props(['labels' => [], 'values' => [], 'color' => '#6366f1', 'height' => 220])
+@props(['labels' => [], 'values' => [], 'color' => '#4f46e5', 'height' => 220])
 
 <div
     x-data="{

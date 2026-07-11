@@ -27,19 +27,27 @@ class RepositoryAnalysisService
 
     public function run(Repository $repository, User $triggeringUser): Analysis
     {
+        // The OpenAI call can legitimately run longer than PHP's default 30s
+        // execution limit, especially with source code included in the
+        // prompt. Extend it to comfortably exceed the HTTP client's own
+        // 180s timeout so a slow-but-successful call isn't killed first.
+        set_time_limit(240);
+
+        $model = $triggeringUser->preferred_ai_model ?: config('services.openai.model');
+
         $analysis = Analysis::create([
             'repository_id' => $repository->id,
             'type' => 'quality',
             'status' => 'running',
             'triggered_by_user_id' => $triggeringUser->id,
-            'model_used' => config('services.openai.model'),
+            'model_used' => $model,
             'started_at' => now(),
         ]);
 
         try {
-            $context = $this->contextBuilder->build($repository, $triggeringUser);
+            $context = $this->contextBuilder->build($repository, $triggeringUser, $triggeringUser->include_source_in_analysis);
             $messages = $this->buildMessages($repository, $context);
-            $result = $this->openAi->chatJson($messages, $this->jsonSchema(), 'repository_analysis');
+            $result = $this->openAi->chatJson($messages, $this->jsonSchema(), 'repository_analysis', $model);
             $categories = $this->validate($result);
 
             DB::transaction(function () use ($analysis, $categories) {

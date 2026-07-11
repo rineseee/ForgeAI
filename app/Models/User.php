@@ -67,6 +67,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(GithubConnection::class);
     }
 
+    public function latestGithubConnection(): ?GithubConnection
+    {
+        return $this->githubConnections()->latest('connected_at')->first();
+    }
+
     public function triggeredAnalyses(): HasMany
     {
         return $this->hasMany(Analysis::class, 'triggered_by_user_id');

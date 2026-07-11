@@ -525,7 +525,7 @@
             </div>
 
             <div class="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-200 pt-8 text-xs text-slate-400 sm:flex-row dark:border-slate-800">
-                <p>&copy; {{ date('Y') }} Forge AI. All rights reserved.</p>
+                <p>&copy; {{ date('Y') }} Rinesa Krasniqi. All rights reserved.</p>
                 <p>Built with Laravel &amp; Tailwind CSS.</p>
             </div>
         </div>

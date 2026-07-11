@@ -167,7 +167,7 @@
                                 @else
                                     @php
                                         $typeLabels = ['code_review' => 'Code Review', 'security' => 'Security', 'quality' => 'Full Analysis', 'tech_debt' => 'Technical Debt', 'documentation' => 'Documentation'];
-                                        $typeColors = ['#6366f1', '#10b981', '#f59e0b', '#f43f5e', '#0ea5e9'];
+                                        $typeColors = ['#4f46e5', '#059669', '#d97706', '#e11d48', '#0284c7'];
                                     @endphp
                                     <div class="grid grid-cols-1 items-center gap-6 sm:grid-cols-2">
                                         <x-dashboard.chart-donut
@@ -208,7 +208,7 @@
                                             return 'Wk '.(int) $week;
                                         })->values()->all();
                                     @endphp
-                                    <x-dashboard.chart-bar :labels="$historyLabels" :values="$analysisHistory->values()->all()" color="#10b981" :height="200" />
+                                    <x-dashboard.chart-bar :labels="$historyLabels" :values="$analysisHistory->values()->all()" color="#059669" :height="200" />
                                 @endif
                             </div>
                         </div>
@@ -239,7 +239,7 @@
                                 @if ($repositoryDistribution->isEmpty())
                                     <x-dashboard.empty-state title="No languages detected" description="Sync repositories to see language distribution." />
                                 @else
-                                    @php $langColors = ['#6366f1', '#10b981', '#f59e0b', '#f43f5e', '#0ea5e9', '#8b5cf6', '#14b8a6']; @endphp
+                                    @php $langColors = ['#4f46e5', '#059669', '#d97706', '#e11d48', '#0284c7', '#7c3aed', '#0d9488']; @endphp
                                     <div class="grid grid-cols-1 items-center gap-6 sm:grid-cols-2">
                                         <x-dashboard.chart-donut
                                             :labels="$repositoryDistribution->keys()->values()->all()"

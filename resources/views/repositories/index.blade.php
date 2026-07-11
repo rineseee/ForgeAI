@@ -80,6 +80,16 @@
                         {{ __('Connect GitHub') }}
                     </a>
                 @endif
+
+                <form method="post" action="{{ route('repositories.import') }}" class="flex items-center gap-2">
+                    @csrf
+                    <input
+                        type="text" name="repository" required
+                        placeholder="owner/repo or GitHub URL"
+                        class="w-56 rounded-lg border-slate-300 bg-white py-2 px-3 text-sm shadow-sm placeholder:text-slate-400 focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
+                    >
+                    <x-secondary-button type="submit">{{ __('Import public repo') }}</x-secondary-button>
+                </form>
             </div>
 
             <div class="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">

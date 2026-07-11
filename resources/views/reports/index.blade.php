@@ -64,7 +64,7 @@ $chartValues = $reports->map(fn ($report) => round($report->categories->avg('sco
             @if ($reports->isNotEmpty())
                 <!-- Score trend chart -->
                 <x-dashboard.card title="Overall Score by Report" description="Average of all six category scores per analysis." class="mb-6 print:hidden">
-                    <x-dashboard.chart-bar :labels="$chartLabels" :values="$chartValues" color="#6366f1" :height="220" />
+                    <x-dashboard.chart-bar :labels="$chartLabels" :values="$chartValues" color="#4f46e5" :height="220" />
                 </x-dashboard.card>
             @endif
 

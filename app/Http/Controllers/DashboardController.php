@@ -34,7 +34,7 @@ class DashboardController extends Controller
         }
 
         $repositoryIds = Repository::query()->where('team_id', $team->id)->pluck('id');
-        $analysisIds = Analysis::query()->whereIn('repository_id', $repositoryIds)->pluck('id');
+        $analysisCount = Analysis::query()->whereIn('repository_id', $repositoryIds)->count();
 
         // "Latest analysis per repository" keeps health scores current —
         // older re-runs of the same repository don't drag the average down.
@@ -52,7 +52,7 @@ class DashboardController extends Controller
 
         $stats = [
             'repositories' => $repositoryIds->count(),
-            'analyses' => $analysisIds->count(),
+            'analyses' => $analysisCount,
             'reports' => $latestAnalysisIds->count(),
             'healthScore' => $latestCategories->isNotEmpty() ? round($latestCategories->avg('score')) : 0,
             'securityScore' => $this->averageFor($latestCategories, 'security'),

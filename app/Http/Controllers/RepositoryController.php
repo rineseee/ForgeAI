@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Domain\Github\Actions\ImportPublicRepository;
 use App\Domain\Github\Actions\SyncGithubRepositories;
 use App\Models\Repository;
+use App\Support\Toast;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use InvalidArgumentException;
+use RuntimeException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 class RepositoryController extends Controller
 {
@@ -32,24 +38,68 @@ class RepositoryController extends Controller
     {
         $user = $request->user();
         $team = $user->currentTeam;
-        $connection = $user->githubConnections()->latest('connected_at')->first();
+        $connection = $user->latestGithubConnection();
 
         if (! $team || ! $connection) {
             return redirect()->route('repositories.index')
                 ->with('status', 'Connect your GitHub account before syncing repositories.');
         }
 
-        $count = $syncGithubRepositories->handle($team, $connection, $user);
+        try {
+            $count = $syncGithubRepositories->handle($team, $connection, $user);
+        } catch (Throwable $e) {
+            Log::error('Repository sync failed: '.$e->getMessage(), ['exception' => $e]);
+
+            Toast::error($user, 'Repository sync failed. Please try again.');
+
+            return redirect()->route('repositories.index')
+                ->with('status', 'Repository sync failed. Please try again.');
+        }
+
+        Toast::success($user, 'notify_sync_complete', "Synced {$count} repositories from GitHub.");
 
         return redirect()->route('repositories.index')
             ->with('status', "Synced {$count} repositories from GitHub.");
     }
 
+    public function import(Request $request, ImportPublicRepository $importPublicRepository): RedirectResponse
+    {
+        $user = $request->user();
+        $team = $user->currentTeam;
+
+        if (! $team) {
+            return redirect()->route('repositories.index')
+                ->with('status', 'No active team found.');
+        }
+
+        $validated = $request->validate([
+            'repository' => ['required', 'string', 'max:255'],
+        ]);
+
+        try {
+            $repository = $importPublicRepository->handle(
+                $team,
+                $validated['repository'],
+                $user->latestGithubConnection(),
+                $user
+            );
+        } catch (InvalidArgumentException|RuntimeException $e) {
+            return redirect()->route('repositories.index')->with('status', $e->getMessage());
+        } catch (Throwable $e) {
+            Log::error('Repository import failed: '.$e->getMessage(), ['exception' => $e]);
+
+            return redirect()->route('repositories.index')
+                ->with('status', 'Repository import failed. Please try again.');
+        }
+
+        Toast::success($user, 'notify_sync_complete', "Imported {$repository->full_name} from GitHub.");
+
+        return redirect()->route('repositories.index')->with('status', "Imported {$repository->full_name}.");
+    }
+
     public function show(Request $request, Repository $repository): View
     {
-        $team = $request->user()->currentTeam;
-
-        if (! $team || $repository->team_id !== $team->id) {
+        if (! $repository->belongsToTeam($request->user()->currentTeam)) {
             throw new NotFoundHttpException;
         }
 
