@@ -55,12 +55,11 @@ class RepositoryAnalysisService
      */
     public function process(Analysis $analysis, User $triggeringUser): Analysis
     {
-        // The OpenAI call can legitimately run longer than PHP's default 30s
-        // execution limit, especially with source code included in the
-        // prompt. Extend it to comfortably exceed the HTTP client's own
-        // 180s timeout so a slow-but-successful call isn't killed first.
-        set_time_limit(240);
-
+        // No set_time_limit() here: this now always runs inside the queue
+        // worker's long-lived process (RunRepositoryAnalysisJob), where
+        // set_time_limit() would reset the *whole worker's* execution
+        // clock instead of just this job's — the worker's own $timeout
+        // property is what bounds a single job run.
         $repository = $analysis->repository;
         $model = $analysis->model_used ?: ($triggeringUser->preferred_ai_model ?: config('services.openai.model'));
 
