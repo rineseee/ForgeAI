@@ -10,7 +10,7 @@ It's a classic Laravel + Blade + Tailwind app (no SPA framework) backed by SQLit
 - **Import public repositories** — pull in any public GitHub repository by `owner/repo` or URL, even ones outside your own connected account.
 - **Team-scoped data** — every user gets a team on registration; repositories, analyses, and reports are scoped to the current team.
 - **Repository details** — per-repository page with metadata, statistics, branches, recent commits, and AI analysis status.
-- **AI analysis pipeline** — triggers a structured OpenAI review of a repository (metadata, commit history, and real source file contents when available), scored across code quality, security, performance, architecture, technical debt, and documentation.
+- **AI analysis pipeline** — triggers a structured OpenAI review of a repository (metadata, commit history, and real source file contents when available), scored across code quality, security, performance, architecture, technical debt, and documentation. Runs as a background queue job so triggering an analysis doesn't block the request; the report page auto-refreshes until it completes. The model used is shown on every analysis/report — different models (e.g. `gpt-4o-mini` vs. reasoning-class models like `gpt-5`) can legitimately score the same repository differently.
 - **Dashboard** — team-wide health/security/quality/technical-debt scores, recent activity, analysis history, and Chart.js visualizations.
 - **Reports** — browsable history of past analyses per repository.
 - **User preferences** — preferred AI model, theme (light/dark/system), and notification toggles.
@@ -48,13 +48,22 @@ GITHUB_REDIRECT_URI="${APP_URL}/github/callback"
 
 ```
 OPENAI_API_KEY=
-OPENAI_MODEL=gpt-4o-mini
+OPENAI_MODEL=gpt-5
 ```
+
+`OPENAI_MODEL` accepts any Chat Completions model (`gpt-4o-mini`, `gpt-4o`, `gpt-5`, ...); users can also override it per-account in AI Preferences. Reasoning-class models (`gpt-5`) only support the default `temperature` — the client omits it automatically for those.
 
 ### Running the app
 
 ```bash
 php artisan serve
+php artisan queue:work
+```
+
+Analysis runs are dispatched to the queue (`QUEUE_CONNECTION=database` by default), so **a queue worker must be running** or analyses will sit at "queued" forever. `composer dev` starts the server, queue worker, log tailer, and Vite together in one command:
+
+```bash
+composer dev
 ```
 
 Frontend assets (Tailwind/Alpine/Chart.js, via Vite) are built separately with `npm run dev` (watch mode) or `npm run build` (production) — the Laravel app itself never runs Node.js at request time.
@@ -73,6 +82,7 @@ app/
 │   ├── Auth/Actions/          # User + team creation on registration
 │   └── Github/Actions/        # GitHub sync/import/connection actions
 ├── Http/Controllers/          # Thin controllers, one per resource
+├── Jobs/                      # Queued work (e.g. RunRepositoryAnalysisJob)
 ├── Models/                    # Eloquent models
 ├── Services/
 │   ├── Analysis/              # Builds repository context, orchestrates AI runs
