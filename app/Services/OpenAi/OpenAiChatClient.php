@@ -15,6 +15,12 @@ class OpenAiChatClient
 {
     private const ENDPOINT = 'https://api.openai.com/v1/chat/completions';
 
+    /**
+     * Models that only allow the default temperature (1) and reject any
+     * explicit value, including 0.2.
+     */
+    private const FIXED_TEMPERATURE_MODELS = ['gpt-5'];
+
     public function chatJson(array $messages, array $jsonSchema, string $schemaName, ?string $model = null): array
     {
         $apiKey = config('services.openai.key');
@@ -23,22 +29,29 @@ class OpenAiChatClient
             throw new RuntimeException('OpenAI API key is not configured.');
         }
 
+        $model ??= config('services.openai.model');
+
+        $payload = [
+            'model' => $model,
+            'messages' => $messages,
+            'response_format' => [
+                'type' => 'json_schema',
+                'json_schema' => [
+                    'name' => $schemaName,
+                    'schema' => $jsonSchema,
+                    'strict' => true,
+                ],
+            ],
+        ];
+
+        if (! in_array($model, self::FIXED_TEMPERATURE_MODELS, true)) {
+            $payload['temperature'] = 0.2;
+        }
+
         $response = Http::withToken($apiKey)
             ->acceptJson()
             ->timeout(180)
-            ->post(self::ENDPOINT, [
-                'model' => $model ?? config('services.openai.model'),
-                'messages' => $messages,
-                'temperature' => 0.2,
-                'response_format' => [
-                    'type' => 'json_schema',
-                    'json_schema' => [
-                        'name' => $schemaName,
-                        'schema' => $jsonSchema,
-                        'strict' => true,
-                    ],
-                ],
-            ]);
+            ->post(self::ENDPOINT, $payload);
 
         if ($response->failed()) {
             throw new RuntimeException('OpenAI API request failed: '.$response->status().' '.$response->body());
