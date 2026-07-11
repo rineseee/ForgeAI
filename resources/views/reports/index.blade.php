@@ -90,6 +90,11 @@ $chartValues = $reports->map(fn ($report) => round($report->categories->avg('sco
                                             @if ($report->triggeredBy)
                                                 <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">by {{ $report->triggeredBy->name }}</p>
                                             @endif
+                                            @if ($report->model_used)
+                                                <span class="mt-1 inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500 dark:bg-slate-800 dark:text-slate-400" title="{{ __('Different AI models can score the same repository differently.') }}">
+                                                    {{ $report->model_used }}
+                                                </span>
+                                            @endif
                                             <div class="mt-2 flex items-center gap-2 print:hidden">
                                                 <a href="{{ route('analyses.show', $report) }}" class="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-slate-500 dark:text-slate-400">
                                                     {{ __('View full report') }}

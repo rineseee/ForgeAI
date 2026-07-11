@@ -19,6 +19,9 @@ $scoreColor = match (true) {
             <p class="truncate text-sm font-semibold text-slate-900 dark:text-white">{{ $report->repository->full_name ?? 'Unknown repository' }}</p>
             <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
                 {{ $report->completed_at?->diffForHumans() }}
+                @if ($report->model_used)
+                    &middot; {{ $report->model_used }}
+                @endif
             </p>
         </div>
     </div>
