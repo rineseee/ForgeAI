@@ -13,7 +13,7 @@ if (class_exists(\League\CommonMark\CommonMarkConverter::class)) {
 }
 @endphp
 
-<div {{ $attributes->merge(['class' => 'prose prose-sm max-w-none prose-slate dark:prose-invert prose-headings:font-semibold prose-a:text-indigo-600 dark:prose-a:text-indigo-400']) }}>
+<div {{ $attributes->merge(['class' => 'prose prose-sm max-w-none prose-slate dark:prose-invert prose-headings:font-semibold prose-a:text-slate-600 dark:prose-a:text-slate-400']) }}>
     @if ($html)
         {!! $html !!}
     @else

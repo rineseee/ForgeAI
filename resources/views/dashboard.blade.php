@@ -22,11 +22,11 @@
                 />
             @else
                 <!-- Welcome banner + quick actions -->
-                <div class="overflow-hidden rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-6 text-white shadow-sm sm:px-8">
+                <div class="overflow-hidden rounded-2xl bg-gradient-to-r from-slate-600 to-slate-700 px-6 py-6 text-white shadow-sm sm:px-8">
                     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <h3 class="text-lg font-semibold">{{ __('Welcome back, :name', ['name' => Auth::user()->name]) }}</h3>
-                            <p class="mt-1 text-sm text-indigo-100">
+                            <p class="mt-1 text-sm text-slate-100">
                                 {{ __("You're viewing :team.", ['team' => $team->name]) }}
                             </p>
                         </div>
@@ -121,7 +121,7 @@
                         <div class="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
                             <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-slate-800">
                                 <h3 class="text-sm font-semibold text-slate-900 dark:text-white">{{ __('Repository Overview') }}</h3>
-                                <a href="{{ route('repositories.index') }}" class="text-xs font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">{{ __('View all') }}</a>
+                                <a href="{{ route('repositories.index') }}" class="text-xs font-medium text-slate-600 hover:text-slate-500 dark:text-slate-400">{{ __('View all') }}</a>
                             </div>
                             <div class="divide-y divide-slate-100 dark:divide-slate-800">
                                 @forelse ($repositories as $repository)
@@ -132,7 +132,7 @@
                                         description="Connect a GitHub repository to start seeing AI-powered insights."
                                     >
                                         <x-slot name="action">
-                                            <a href="{{ route('repositories.index') }}" class="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-indigo-500">
+                                            <a href="{{ route('repositories.index') }}" class="inline-flex items-center gap-1.5 rounded-lg bg-slate-600 px-3.5 py-2 text-xs font-semibold text-white transition hover:bg-slate-500">
                                                 Connect Repository
                                             </a>
                                         </x-slot>
@@ -145,7 +145,7 @@
                         <div class="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
                             <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-slate-800">
                                 <h3 class="text-sm font-semibold text-slate-900 dark:text-white">{{ __('Recent Analyses') }}</h3>
-                                <a href="{{ route('analyses.index') }}" class="text-xs font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">{{ __('View all') }}</a>
+                                <a href="{{ route('analyses.index') }}" class="text-xs font-medium text-slate-600 hover:text-slate-500 dark:text-slate-400">{{ __('View all') }}</a>
                             </div>
                             <div class="divide-y divide-slate-100 dark:divide-slate-800">
                                 @forelse ($recentAnalyses as $analysis)
@@ -277,7 +277,7 @@
                         <div class="rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
                             <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-slate-800">
                                 <h3 class="text-sm font-semibold text-slate-900 dark:text-white">{{ __('AI Reports') }}</h3>
-                                <a href="{{ route('reports.index') }}" class="text-xs font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">{{ __('View all') }}</a>
+                                <a href="{{ route('reports.index') }}" class="text-xs font-medium text-slate-600 hover:text-slate-500 dark:text-slate-400">{{ __('View all') }}</a>
                             </div>
                             <div class="divide-y divide-slate-100 dark:divide-slate-800">
                                 @forelse ($recentReports as $report)

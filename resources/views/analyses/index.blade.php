@@ -35,11 +35,11 @@
                     <input
                         type="search" x-model="search" x-on:input.debounce.150ms="apply()"
                         placeholder="Search by repository or type..."
-                        class="w-full rounded-lg border-slate-300 bg-white py-2 pl-9 pr-3 text-sm shadow-sm placeholder:text-slate-400 focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
+                        class="w-full rounded-lg border-slate-300 bg-white py-2 pl-9 pr-3 text-sm shadow-sm placeholder:text-slate-400 focus:border-slate-500 focus:ring-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
                     >
                 </div>
 
-                <select x-model="type" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+                <select x-model="type" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-slate-500 focus:ring-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
                     <option value="">All types</option>
                     <option value="code_review">Code Review</option>
                     <option value="security">Security</option>
@@ -48,7 +48,7 @@
                     <option value="documentation">Documentation</option>
                 </select>
 
-                <select x-model="status" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+                <select x-model="status" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-slate-500 focus:ring-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
                     <option value="">All statuses</option>
                     <option value="completed">Completed</option>
                     <option value="running">Running</option>
@@ -56,7 +56,7 @@
                     <option value="failed">Failed</option>
                 </select>
 
-                <select x-model="sort" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+                <select x-model="sort" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-slate-500 focus:ring-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
                     <option value="date_desc">Newest first</option>
                     <option value="date_asc">Oldest first</option>
                 </select>

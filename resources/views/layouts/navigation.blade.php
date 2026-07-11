@@ -11,7 +11,7 @@
     </button>
 
     <a href="{{ route('dashboard') }}" class="flex items-center gap-2 lg:hidden">
-        <x-application-logo class="h-7 w-7 fill-current text-indigo-600 dark:text-indigo-400" />
+        <x-application-logo class="h-7 w-7 fill-current text-slate-600 dark:text-slate-400" />
     </a>
 
     <!-- Search -->
@@ -23,7 +23,7 @@
             <input
                 type="search"
                 placeholder="Search repositories, analyses, reports..."
-                class="w-full rounded-lg border-slate-200 bg-slate-50 py-2 pl-9 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-indigo-500 focus:bg-white focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:placeholder:text-slate-500 dark:focus:bg-slate-800 dark:focus:border-indigo-500"
+                class="w-full rounded-lg border-slate-200 bg-slate-50 py-2 pl-9 pr-3 text-sm text-slate-700 placeholder:text-slate-400 focus:border-slate-500 focus:bg-white focus:ring-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:placeholder:text-slate-500 dark:focus:bg-slate-800 dark:focus:border-slate-500"
             >
         </div>
     </div>
@@ -39,7 +39,7 @@
         @if ($currentRole)
             <span @class([
                 'hidden sm:inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold capitalize',
-                'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-400' => $currentRole === 'admin',
+                'bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-400' => $currentRole === 'admin',
                 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400' => $currentRole === 'developer',
             ])>
                 {{ $currentRole }}
@@ -63,7 +63,7 @@
         <x-dropdown align="right" width="48">
             <x-slot name="trigger">
                 <button class="inline-flex items-center gap-2 rounded-lg px-2 py-1.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 focus:outline-none dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white">
-                    <span class="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 text-xs font-semibold text-white">
+                    <span class="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-slate-500 to-slate-600 text-xs font-semibold text-white">
                         {{ Str::of(Auth::user()->name)->substr(0, 1)->upper() }}
                     </span>
                     <span class="hidden sm:block">{{ Auth::user()->name }}</span>

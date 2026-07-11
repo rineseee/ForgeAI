@@ -1,7 +1,7 @@
 @props(['commit'])
 
 <div class="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0">
-    <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 text-[11px] font-semibold text-white">
+    <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-slate-500 to-slate-600 text-[11px] font-semibold text-white">
         {{ strtoupper(substr($commit->author, 0, 1)) }}
     </span>
 

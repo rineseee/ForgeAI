@@ -12,7 +12,7 @@
 
     <span class="relative mt-0.5 inline-flex h-6 w-11 shrink-0 items-center">
         <input type="checkbox" name="{{ $name }}" value="1" @checked($checked) class="peer sr-only">
-        <span class="absolute inset-0 rounded-full bg-slate-200 transition-colors duration-200 peer-checked:bg-indigo-600 dark:bg-slate-700"></span>
+        <span class="absolute inset-0 rounded-full bg-slate-200 transition-colors duration-200 peer-checked:bg-slate-600 dark:bg-slate-700"></span>
         <span class="absolute left-1 h-4 w-4 rounded-full bg-white shadow-sm transition-transform duration-200 peer-checked:translate-x-5"></span>
     </span>
 </label>

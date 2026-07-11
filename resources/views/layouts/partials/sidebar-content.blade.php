@@ -10,7 +10,7 @@ $navItems = [
 @endphp
 
 <div class="flex h-16 shrink-0 items-center gap-2 border-b border-slate-200 px-5 dark:border-slate-800">
-    <x-application-logo class="h-7 w-7 shrink-0 fill-current text-indigo-600 dark:text-indigo-400" />
+    <x-application-logo class="h-7 w-7 shrink-0 fill-current text-slate-600 dark:text-slate-400" />
     @if ($collapsible)
         <span x-show="!sidebarCollapsed" x-cloak class="truncate text-lg font-bold tracking-tight text-slate-900 dark:text-white">Forge AI</span>
     @else
@@ -60,7 +60,7 @@ $navItems = [
         <div @class(['flex items-center gap-3 rounded-lg bg-slate-50 px-3 py-2.5 dark:bg-slate-800/60', 'justify-center px-2' => $collapsible])
             @if ($collapsible) :class="sidebarCollapsed ? 'justify-center px-2' : ''" @endif
         >
-            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 text-xs font-semibold text-white">
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-slate-500 to-slate-600 text-xs font-semibold text-white">
                 {{ \Illuminate\Support\Str::of($user->name)->substr(0, 1)->upper() }}
             </span>
             @if ($collapsible)

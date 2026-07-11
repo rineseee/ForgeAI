@@ -1,4 +1,4 @@
-@props(['value', 'max' => 100, 'color' => 'bg-indigo-600', 'label' => null])
+@props(['value', 'max' => 100, 'color' => 'bg-slate-600', 'label' => null])
 
 @php
 $pct = $max > 0 ? min(100, round(($value / $max) * 100)) : 0;

@@ -9,6 +9,6 @@
     </div>
 
     @if ($branch->is_default)
-        <span class="inline-flex shrink-0 items-center rounded-full bg-indigo-100 px-2 py-0.5 text-[11px] font-medium text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-400">Default</span>
+        <span class="inline-flex shrink-0 items-center rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium text-slate-700 dark:bg-slate-500/15 dark:text-slate-400">Default</span>
     @endif
 </div>

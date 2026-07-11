@@ -27,12 +27,12 @@
         <!-- Remember Me -->
         <div class="flex items-center justify-between">
             <label for="remember_me" class="inline-flex items-center gap-2">
-                <input id="remember_me" type="checkbox" class="rounded border-slate-300 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:border-slate-600 dark:bg-slate-800" name="remember">
+                <input id="remember_me" type="checkbox" class="rounded border-slate-300 text-slate-600 shadow-sm focus:ring-slate-500 dark:border-slate-600 dark:bg-slate-800" name="remember">
                 <span class="text-sm text-slate-600 dark:text-slate-400">{{ __('Remember me') }}</span>
             </label>
 
             @if (Route::has('password.request'))
-                <a class="text-sm font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400" href="{{ route('password.request') }}">
+                <a class="text-sm font-medium text-slate-600 hover:text-slate-500 dark:text-slate-400" href="{{ route('password.request') }}">
                     {{ __('Forgot your password?') }}
                 </a>
             @endif
@@ -46,7 +46,7 @@
     @if (Route::has('register'))
         <p class="mt-6 text-center text-sm text-slate-500 dark:text-slate-400">
             {{ __("Don't have an account?") }}
-            <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">{{ __('Sign up') }}</a>
+            <a href="{{ route('register') }}" class="font-medium text-slate-600 hover:text-slate-500 dark:text-slate-400">{{ __('Sign up') }}</a>
         </p>
     @endif
 </x-guest-layout>

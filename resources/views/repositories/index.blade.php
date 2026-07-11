@@ -46,24 +46,24 @@
                     <input
                         type="search" x-model="search" x-on:input.debounce.150ms="apply()"
                         placeholder="Search repositories..."
-                        class="w-full rounded-lg border-slate-300 bg-white py-2 pl-9 pr-3 text-sm shadow-sm placeholder:text-slate-400 focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
+                        class="w-full rounded-lg border-slate-300 bg-white py-2 pl-9 pr-3 text-sm shadow-sm placeholder:text-slate-400 focus:border-slate-500 focus:ring-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
                     >
                 </div>
 
-                <select x-model="language" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+                <select x-model="language" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-slate-500 focus:ring-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
                     <option value="">All languages</option>
                     @foreach ($repositories->pluck('language')->filter()->unique()->sort() as $lang)
                         <option value="{{ $lang }}">{{ $lang }}</option>
                     @endforeach
                 </select>
 
-                <select x-model="visibility" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+                <select x-model="visibility" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-slate-500 focus:ring-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
                     <option value="">All visibility</option>
                     <option value="public">Public</option>
                     <option value="private">Private</option>
                 </select>
 
-                <select x-model="sort" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+                <select x-model="sort" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-slate-500 focus:ring-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
                     <option value="date_desc">Recently synced</option>
                     <option value="date_asc">Oldest synced</option>
                     <option value="name_asc">Name (A-Z)</option>
@@ -76,7 +76,7 @@
                         <x-secondary-button type="submit">{{ __('Sync repositories') }}</x-secondary-button>
                     </form>
                 @else
-                    <a href="{{ route('github.connect') }}" class="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:from-indigo-500 hover:to-violet-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
+                    <a href="{{ route('github.connect') }}" class="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-slate-600 to-slate-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:from-slate-500 hover:to-slate-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
                         {{ __('Connect GitHub') }}
                     </a>
                 @endif
@@ -86,7 +86,7 @@
                     <input
                         type="text" name="repository" required
                         placeholder="owner/repo or GitHub URL"
-                        class="w-56 rounded-lg border-slate-300 bg-white py-2 px-3 text-sm shadow-sm placeholder:text-slate-400 focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
+                        class="w-56 rounded-lg border-slate-300 bg-white py-2 px-3 text-sm shadow-sm placeholder:text-slate-400 focus:border-slate-500 focus:ring-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
                     >
                     <x-secondary-button type="submit">{{ __('Import public repo') }}</x-secondary-button>
                 </form>
@@ -105,7 +105,7 @@
                                     <x-primary-button type="submit">{{ __('Import repositories') }}</x-primary-button>
                                 </form>
                             @else
-                                <a href="{{ route('github.connect') }}" class="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:from-indigo-500 hover:to-violet-500 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
+                                <a href="{{ route('github.connect') }}" class="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-slate-600 to-slate-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-150 hover:from-slate-500 hover:to-slate-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900">
                                     {{ __('Connect GitHub') }}
                                 </a>
                             @endif

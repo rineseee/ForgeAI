@@ -20,7 +20,7 @@
     <header class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-md dark:border-slate-800/70 dark:bg-slate-950/80">
         <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
             <a href="/" class="flex items-center gap-2">
-                <x-application-logo class="h-7 w-7 fill-current text-indigo-600 dark:text-indigo-400" />
+                <x-application-logo class="h-7 w-7 fill-current text-slate-600 dark:text-slate-400" />
                 <span class="text-lg font-bold tracking-tight">Forge AI</span>
             </a>
 
@@ -43,14 +43,14 @@
                 </button>
 
                 @auth
-                    <a href="{{ url('/dashboard') }}" class="hidden rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:from-indigo-500 hover:to-violet-500 sm:inline-flex">
+                    <a href="{{ url('/dashboard') }}" class="hidden rounded-lg bg-gradient-to-r from-slate-600 to-slate-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:from-slate-500 hover:to-slate-600 sm:inline-flex">
                         Dashboard
                     </a>
                 @else
                     <a href="{{ route('login') }}" class="hidden rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:text-slate-900 sm:inline-flex dark:text-slate-300 dark:hover:text-white">
                         Log in
                     </a>
-                    <a href="{{ route('register') }}" class="hidden rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:from-indigo-500 hover:to-violet-500 sm:inline-flex">
+                    <a href="{{ route('register') }}" class="hidden rounded-lg bg-gradient-to-r from-slate-600 to-slate-700 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:from-slate-500 hover:to-slate-600 sm:inline-flex">
                         Get Started
                     </a>
                 @endauth
@@ -72,10 +72,10 @@
                 <a href="#faq" class="py-1">FAQ</a>
                 <div class="mt-2 flex gap-3 border-t border-slate-200 pt-4 dark:border-slate-800">
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="flex-1 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2 text-center text-sm font-semibold text-white">Dashboard</a>
+                        <a href="{{ url('/dashboard') }}" class="flex-1 rounded-lg bg-gradient-to-r from-slate-600 to-slate-700 px-4 py-2 text-center text-sm font-semibold text-white">Dashboard</a>
                     @else
                         <a href="{{ route('login') }}" class="flex-1 rounded-lg border border-slate-300 px-4 py-2 text-center text-sm font-semibold dark:border-slate-700">Log in</a>
-                        <a href="{{ route('register') }}" class="flex-1 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-4 py-2 text-center text-sm font-semibold text-white">Get Started</a>
+                        <a href="{{ route('register') }}" class="flex-1 rounded-lg bg-gradient-to-r from-slate-600 to-slate-700 px-4 py-2 text-center text-sm font-semibold text-white">Get Started</a>
                     @endauth
                 </div>
             </div>
@@ -85,18 +85,18 @@
     {{-- ============ HERO ============ --}}
     <section class="relative overflow-hidden">
         <div class="absolute inset-0 -z-10">
-            <div class="absolute -top-40 left-1/2 h-[36rem] w-[64rem] -translate-x-1/2 rounded-full bg-gradient-to-br from-indigo-500/20 via-violet-500/10 to-transparent blur-3xl"></div>
+            <div class="absolute -top-40 left-1/2 h-[36rem] w-[64rem] -translate-x-1/2 rounded-full bg-gradient-to-br from-slate-500/20 via-slate-600/10 to-transparent blur-3xl"></div>
         </div>
 
         <div class="mx-auto max-w-7xl px-4 pb-20 pt-20 text-center sm:px-6 lg:px-8 lg:pt-28">
-            <a href="#features" class="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-xs font-medium text-slate-600 shadow-sm transition hover:border-indigo-200 hover:text-indigo-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-indigo-500/40 dark:hover:text-indigo-400">
+            <a href="#features" class="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-xs font-medium text-slate-600 shadow-sm transition hover:border-slate-200 hover:text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-500/40 dark:hover:text-slate-400">
                 <span class="flex h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
                 Now analyzing repositories with GPT-4.1
             </a>
 
             <h1 class="mx-auto max-w-4xl text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
                 Ship better code with
-                <span class="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">AI-powered</span>
+                <span class="bg-gradient-to-r from-slate-600 to-slate-700 bg-clip-text text-transparent">AI-powered</span>
                 engineering insight.
             </h1>
 
@@ -106,7 +106,7 @@
             </p>
 
             <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <a href="{{ route('register') }}" class="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-600/20 transition hover:from-indigo-500 hover:to-violet-500 hover:shadow-xl hover:shadow-indigo-600/30">
+                <a href="{{ route('register') }}" class="inline-flex items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-slate-600 to-slate-700 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-600/20 transition hover:from-slate-500 hover:to-slate-600 hover:shadow-xl hover:shadow-slate-600/30">
                     Get Started Free
                     <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
                 </a>
@@ -154,8 +154,8 @@
                     ['title' => 'Performance Suggestions', 'desc' => 'AI-identified bottlenecks and optimization opportunities, with concrete fix suggestions.', 'icon' => 'M13 10V3L4 14h7v7l9-11h-7z', 'accent' => 'emerald'],
                 ];
                 $accentMap = [
-                    'indigo' => 'bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400',
-                    'violet' => 'bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400',
+                    'indigo' => 'bg-slate-50 text-slate-600 dark:bg-slate-500/10 dark:text-slate-400',
+                    'violet' => 'bg-slate-100 text-slate-700 dark:bg-slate-600/10 dark:text-slate-500',
                     'red' => 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400',
                     'emerald' => 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400',
                     'amber' => 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
@@ -194,11 +194,11 @@
                 ] as $i => $item)
                     <div class="relative">
                         <div class="flex items-center gap-4">
-                            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-violet-600 text-sm font-bold text-white shadow-lg shadow-indigo-600/20">
+                            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-slate-600 to-slate-700 text-sm font-bold text-white shadow-lg shadow-slate-600/20">
                                 {{ $item['step'] }}
                             </span>
                             @if (!$loop->last)
-                                <div class="hidden h-px flex-1 bg-gradient-to-r from-indigo-300 to-transparent sm:block lg:hidden"></div>
+                                <div class="hidden h-px flex-1 bg-gradient-to-r from-slate-300 to-transparent sm:block lg:hidden"></div>
                             @endif
                         </div>
                         <h3 class="mt-4 text-base font-semibold">{{ $item['title'] }}</h3>
@@ -218,7 +218,7 @@
             </div>
 
             <div class="relative mt-16">
-                <div class="absolute inset-0 -z-10 bg-gradient-to-t from-indigo-500/10 to-transparent blur-2xl"></div>
+                <div class="absolute inset-0 -z-10 bg-gradient-to-t from-slate-500/10 to-transparent blur-2xl"></div>
 
                 <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-300/40 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/40">
                     <!-- fake window chrome -->
@@ -231,7 +231,7 @@
 
                     <div class="grid grid-cols-1 gap-px bg-slate-100 p-px sm:grid-cols-4 dark:bg-slate-800">
                         @foreach ([
-                            ['label' => 'Repositories', 'value' => '12', 'accent' => 'text-indigo-600 dark:text-indigo-400'],
+                            ['label' => 'Repositories', 'value' => '12', 'accent' => 'text-slate-600 dark:text-slate-400'],
                             ['label' => 'Analyses Run', 'value' => '248', 'accent' => 'text-emerald-600 dark:text-emerald-400'],
                             ['label' => 'Critical Findings', 'value' => '3', 'accent' => 'text-red-600 dark:text-red-400'],
                             ['label' => 'Reports Generated', 'value' => '34', 'accent' => 'text-amber-600 dark:text-amber-400'],
@@ -351,7 +351,7 @@
                         </div>
                         <p class="mt-4 text-sm leading-relaxed text-slate-700 dark:text-slate-300">&ldquo;{{ $t['quote'] }}&rdquo;</p>
                         <div class="mt-6 flex items-center gap-3">
-                            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 text-sm font-semibold text-white">
+                            <span class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-slate-500 to-slate-600 text-sm font-semibold text-white">
                                 {{ collect(explode(' ', $t['name']))->map(fn ($p) => $p[0])->join('') }}
                             </span>
                             <div>
@@ -381,11 +381,11 @@
                 ] as $plan)
                     <div @class([
                         'relative rounded-2xl border p-8 shadow-sm transition',
-                        'border-2 border-indigo-600 bg-white shadow-xl shadow-indigo-600/10 dark:bg-slate-900' => $plan['popular'],
+                        'border-2 border-slate-600 bg-white shadow-xl shadow-slate-600/10 dark:bg-slate-900' => $plan['popular'],
                         'border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900' => ! $plan['popular'],
                     ])>
                         @if ($plan['popular'])
-                            <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-indigo-600 to-violet-600 px-3 py-1 text-xs font-semibold text-white shadow">Most Popular</span>
+                            <span class="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-slate-600 to-slate-700 px-3 py-1 text-xs font-semibold text-white shadow">Most Popular</span>
                         @endif
 
                         <h3 class="text-lg font-semibold">{{ $plan['name'] }}</h3>
@@ -397,7 +397,7 @@
 
                         <a href="{{ route('register') }}" @class([
                             'mt-6 block rounded-lg px-4 py-2.5 text-center text-sm font-semibold shadow-sm transition',
-                            'bg-gradient-to-r from-indigo-600 to-violet-600 text-white hover:from-indigo-500 hover:to-violet-500' => $plan['popular'],
+                            'bg-gradient-to-r from-slate-600 to-slate-700 text-white hover:from-slate-500 hover:to-slate-600' => $plan['popular'],
                             'border border-slate-300 text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800' => ! $plan['popular'],
                         ])>{{ $plan['cta'] }}</a>
 
@@ -455,16 +455,16 @@
 
     {{-- ============ FINAL CTA ============ --}}
     <section class="px-4 pb-24 sm:px-6 lg:px-8">
-        <div class="relative mx-auto max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-700 px-8 py-16 text-center text-white shadow-2xl shadow-indigo-600/30">
+        <div class="relative mx-auto max-w-5xl overflow-hidden rounded-3xl bg-gradient-to-br from-slate-700 via-slate-600 to-slate-800 px-8 py-16 text-center text-white shadow-2xl shadow-slate-600/30">
             <div class="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/10 blur-3xl"></div>
-            <div class="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-violet-400/20 blur-3xl"></div>
+            <div class="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-slate-500/20 blur-3xl"></div>
 
             <h2 class="relative text-3xl font-bold tracking-tight sm:text-4xl">Ready to ship better code?</h2>
-            <p class="relative mx-auto mt-4 max-w-xl text-indigo-100">
+            <p class="relative mx-auto mt-4 max-w-xl text-slate-100">
                 Join engineering teams already using Forge AI to catch issues before they reach production.
             </p>
             <div class="relative mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                <a href="{{ route('register') }}" class="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-indigo-700 shadow-lg transition hover:bg-indigo-50">
+                <a href="{{ route('register') }}" class="inline-flex items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-slate-700 shadow-lg transition hover:bg-slate-50">
                     Get Started Free
                 </a>
                 <a href="{{ route('login') }}" class="inline-flex items-center justify-center gap-2 rounded-lg border border-white/30 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10">
@@ -480,13 +480,13 @@
             <div class="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:grid-cols-5">
                 <div class="col-span-2 lg:col-span-1">
                     <a href="/" class="flex items-center gap-2">
-                        <x-application-logo class="h-7 w-7 fill-current text-indigo-600 dark:text-indigo-400" />
+                        <x-application-logo class="h-7 w-7 fill-current text-slate-600 dark:text-slate-400" />
                         <span class="text-lg font-bold tracking-tight">Forge AI</span>
                     </a>
                     <p class="mt-3 text-sm text-slate-500 dark:text-slate-400">AI-powered software engineering insight for teams that ship.</p>
                     <div class="mt-4 flex gap-3">
                         @foreach (['X', 'GH', 'IN'] as $social)
-                            <a href="#" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-xs font-semibold text-slate-500 transition hover:border-indigo-300 hover:text-indigo-600 dark:border-slate-700 dark:text-slate-400 dark:hover:border-indigo-500/40 dark:hover:text-indigo-400">
+                            <a href="#" class="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-xs font-semibold text-slate-500 transition hover:border-slate-300 hover:text-slate-600 dark:border-slate-700 dark:text-slate-400 dark:hover:border-slate-500/40 dark:hover:text-slate-400">
                                 {{ $social }}
                             </a>
                         @endforeach

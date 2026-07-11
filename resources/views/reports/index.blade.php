@@ -1,9 +1,9 @@
 @php
 $categoryColors = [
-    'code_quality' => 'bg-indigo-500',
+    'code_quality' => 'bg-slate-500',
     'security' => 'bg-red-500',
     'performance' => 'bg-amber-500',
-    'architecture' => 'bg-violet-500',
+    'architecture' => 'bg-slate-600',
     'documentation' => 'bg-sky-500',
     'technical_debt' => 'bg-emerald-500',
 ];
@@ -49,11 +49,11 @@ $chartValues = $reports->map(fn ($report) => round($report->categories->avg('sco
                     <input
                         type="search" x-model="search" x-on:input.debounce.150ms="apply()"
                         placeholder="Search reports by repository..."
-                        class="w-full rounded-lg border-slate-300 bg-white py-2 pl-9 pr-3 text-sm shadow-sm placeholder:text-slate-400 focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
+                        class="w-full rounded-lg border-slate-300 bg-white py-2 pl-9 pr-3 text-sm shadow-sm placeholder:text-slate-400 focus:border-slate-500 focus:ring-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-500"
                     >
                 </div>
 
-                <select x-model="sort" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
+                <select x-model="sort" x-on:change="apply()" class="rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-slate-500 focus:ring-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100">
                     <option value="date_desc">Newest first</option>
                     <option value="date_asc">Oldest first</option>
                     <option value="score_desc">Highest score</option>
@@ -91,7 +91,7 @@ $chartValues = $reports->map(fn ($report) => round($report->categories->avg('sco
                                                 <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">by {{ $report->triggeredBy->name }}</p>
                                             @endif
                                             <div class="mt-2 flex items-center gap-2 print:hidden">
-                                                <a href="{{ route('analyses.show', $report) }}" class="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+                                                <a href="{{ route('analyses.show', $report) }}" class="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-slate-500 dark:text-slate-400">
                                                     {{ __('View full report') }}
                                                     <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
                                                 </a>

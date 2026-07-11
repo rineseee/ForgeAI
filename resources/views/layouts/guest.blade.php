@@ -19,9 +19,9 @@
     <body class="font-sans text-slate-900 antialiased dark:text-slate-100">
         <div class="grid min-h-screen bg-slate-50 lg:grid-cols-2 dark:bg-slate-950">
             <!-- Branding panel -->
-            <div class="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-700 px-12 py-12 text-white lg:flex">
+            <div class="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-slate-700 via-slate-600 to-slate-800 px-12 py-12 text-white lg:flex">
                 <div class="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-white/10 blur-3xl"></div>
-                <div class="absolute bottom-0 left-0 h-72 w-72 -translate-x-1/3 translate-y-1/3 rounded-full bg-violet-400/20 blur-3xl"></div>
+                <div class="absolute bottom-0 left-0 h-72 w-72 -translate-x-1/3 translate-y-1/3 rounded-full bg-slate-500/20 blur-3xl"></div>
 
                 <a href="/" class="relative flex items-center gap-3">
                     <x-application-logo class="h-10 w-10 fill-current text-white" />
@@ -32,11 +32,11 @@
                     <h1 class="text-3xl font-bold leading-tight">
                         Ship better code with AI-powered engineering insight.
                     </h1>
-                    <p class="mt-4 text-indigo-100">
+                    <p class="mt-4 text-slate-100">
                         Connect your GitHub repositories and get automated code review, security analysis, and technical debt reports — in minutes, not sprints.
                     </p>
 
-                    <ul class="mt-8 space-y-3 text-sm text-indigo-100">
+                    <ul class="mt-8 space-y-3 text-sm text-slate-100">
                         <li class="flex items-center gap-3">
                             <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-white/15">
                                 <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
@@ -58,7 +58,7 @@
                     </ul>
                 </div>
 
-                <p class="relative text-xs text-indigo-200">&copy; {{ date('Y') }} Rinesa Krasniqi. All rights reserved.</p>
+                <p class="relative text-xs text-slate-200">&copy; {{ date('Y') }} Rinesa Krasniqi. All rights reserved.</p>
             </div>
 
             <!-- Form panel -->
@@ -79,7 +79,7 @@
 
                 <div class="w-full max-w-sm">
                     <a href="/" class="mb-8 flex items-center justify-center gap-2 lg:hidden">
-                        <x-application-logo class="h-9 w-9 fill-current text-indigo-600 dark:text-indigo-400" />
+                        <x-application-logo class="h-9 w-9 fill-current text-slate-600 dark:text-slate-400" />
                         <span class="text-lg font-bold text-slate-900 dark:text-white">Forge AI</span>
                     </a>
 

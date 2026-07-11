@@ -17,7 +17,7 @@
             <x-input-label for="preferred_ai_model" value="Preferred AI model" />
             <select
                 id="preferred_ai_model" name="preferred_ai_model"
-                class="mt-1 block w-full rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
+                class="mt-1 block w-full rounded-lg border-slate-300 bg-white text-sm shadow-sm focus:border-slate-500 focus:ring-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
             >
                 <option value="">{{ __('Platform default (:model)', ['model' => config('services.openai.model')]) }}</option>
                 @foreach (\App\Models\User::AI_MODELS as $model)
