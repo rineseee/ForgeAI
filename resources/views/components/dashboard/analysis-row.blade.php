@@ -22,13 +22,15 @@ $score = $analysis->relationLoaded('categories') && $analysis->categories->isNot
         </p>
         <p class="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
             {{ $analysis->completed_at?->diffForHumans() ?? 'in progress' }}
-            @if ($analysis->model_used)
-                &middot; {{ $analysis->model_used }}
-            @endif
         </p>
     </div>
 
     <div class="flex shrink-0 items-center gap-3">
+        @if ($analysis->model_used)
+            <span class="hidden items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500 dark:bg-slate-800 dark:text-slate-400 sm:inline-flex" title="{{ __('Different AI models can score the same repository differently.') }}">
+                {{ $analysis->model_used }}
+            </span>
+        @endif
         @if ($score !== null)
             <span class="inline-flex items-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-200">
                 {{ $score }}
