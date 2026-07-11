@@ -20,7 +20,7 @@ class AnalysisFactory extends Factory
             'pull_request_id' => null,
             'type' => fake()->randomElement(['code_review', 'security', 'quality', 'tech_debt', 'documentation']),
             'status' => 'completed',
-            'model_used' => 'gpt-4.1',
+            'model_used' => 'gpt-5',
             'started_at' => $started,
             'completed_at' => fake()->dateTimeBetween($started),
         ];

@@ -39,7 +39,7 @@
         @if ($currentRole)
             <span @class([
                 'hidden sm:inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold capitalize',
-                'bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-400' => $currentRole === 'admin',
+                'bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-400' => $currentRole === 'owner',
                 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400' => $currentRole === 'developer',
             ])>
                 {{ $currentRole }}

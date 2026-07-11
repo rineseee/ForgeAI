@@ -37,7 +37,7 @@
         <x-input-error :messages="$errors->get('password_confirmation')" class="-mt-2" />
 
         <p class="text-xs text-slate-500 dark:text-slate-400">
-            {{ __('Creating an account also creates your own team, and you\'ll be assigned the Admin role.') }}
+            {{ __('Creating an account also creates your own team, and you\'ll be assigned the Owner role.') }}
         </p>
 
         <x-primary-button class="w-full">

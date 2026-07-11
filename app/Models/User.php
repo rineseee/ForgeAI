@@ -25,7 +25,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasRoles, Notifiable;
 
-    public const AI_MODELS = ['gpt-4o-mini', 'gpt-4o'];
+    public const AI_MODELS = ['gpt-4o-mini', 'gpt-4o', 'gpt-5'];
 
     public const THEMES = ['light', 'dark', 'system'];
 

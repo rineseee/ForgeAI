@@ -12,7 +12,7 @@ use Spatie\Permission\PermissionRegistrar;
 class CreateUserWithTeam
 {
     /**
-     * Registers a user with their own team and makes them that team's Admin.
+     * Registers a user with their own team and makes them that team's Owner.
      * Every user belongs to at least one team, matching the team-scoped
      * role/permission model (config('permission.teams')).
      */
@@ -35,9 +35,9 @@ class CreateUserWithTeam
             $team->members()->syncWithoutDetaching([$user->id]);
 
             app(PermissionRegistrar::class)->setPermissionsTeamId($team->id);
-            $adminRole = Role::findOrCreate('admin', 'web');
-            $adminRole->syncPermissions(\Spatie\Permission\Models\Permission::all());
-            $user->assignRole($adminRole);
+            $ownerRole = Role::findOrCreate('owner', 'web');
+            $ownerRole->syncPermissions(\Spatie\Permission\Models\Permission::all());
+            $user->assignRole($ownerRole);
 
             return $user;
         });

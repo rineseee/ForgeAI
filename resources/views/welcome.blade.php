@@ -91,7 +91,7 @@
         <div class="mx-auto max-w-7xl px-4 pb-20 pt-20 text-center sm:px-6 lg:px-8 lg:pt-28">
             <a href="#features" class="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-1.5 text-xs font-medium text-slate-600 shadow-sm transition hover:border-slate-200 hover:text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-slate-500/40 dark:hover:text-slate-400">
                 <span class="flex h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-                Now analyzing repositories with GPT-4.1
+                Now analyzing repositories with GPT-5
             </a>
 
             <h1 class="mx-auto max-w-4xl text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">

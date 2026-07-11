@@ -24,7 +24,7 @@
                     <option value="{{ $model }}" @selected($user->preferred_ai_model === $model)>{{ $model }}</option>
                 @endforeach
             </select>
-            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ __('gpt-4o-mini is faster and cheaper. gpt-4o is slower but more thorough.') }}</p>
+            <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">{{ __('gpt-4o-mini is fastest and cheapest. gpt-4o is a balanced option. gpt-5 is the most capable and thorough.') }}</p>
         </div>
 
         <x-forms.toggle

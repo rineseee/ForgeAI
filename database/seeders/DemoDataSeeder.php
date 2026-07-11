@@ -132,15 +132,15 @@ class DemoDataSeeder extends Seeder
         $owner->unsetRelation('roles');
         $developer->unsetRelation('roles');
 
-        $adminRole = Role::findOrCreate('admin', 'web');
+        $ownerRole = Role::findOrCreate('owner', 'web');
         $developerRole = Role::findOrCreate('developer', 'web');
 
-        $adminRole->syncPermissions(Permission::all());
+        $ownerRole->syncPermissions(Permission::all());
         $developerRole->syncPermissions([
             'repositories.view', 'repositories.analyze', 'reports.view', 'reports.export',
         ]);
 
-        $owner->assignRole($adminRole);
+        $owner->assignRole($ownerRole);
         $developer->assignRole($developerRole);
     }
 }
