@@ -88,7 +88,8 @@ class RepositoryShowTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('repositories.analyze', $repository));
 
-        $response->assertRedirect(route('repositories.show', $repository));
+        $analysis = $repository->analyses()->latest('id')->first();
+        $response->assertRedirect(route('analyses.show', $analysis));
         $this->assertDatabaseHas('analyses', [
             'repository_id' => $repository->id,
             'triggered_by_user_id' => $user->id,

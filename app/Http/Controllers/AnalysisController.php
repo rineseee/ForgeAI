@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Analysis;
 use App\Models\Repository;
 use App\Services\Analysis\RepositoryAnalysisService;
-use App\Support\Toast;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -33,19 +32,10 @@ class AnalysisController extends Controller
             throw new NotFoundHttpException;
         }
 
-        $analysis = $analysisService->run($repository, $request->user());
+        $analysis = $analysisService->queue($repository, $request->user());
 
-        if ($analysis->status === 'failed') {
-            Toast::error($request->user(), "Analysis failed for {$repository->full_name}: {$analysis->failure_reason}");
-
-            return redirect()->route('repositories.show', $repository)
-                ->with('status', 'Analysis failed: '.$analysis->failure_reason);
-        }
-
-        Toast::success($request->user(), 'notify_analysis_complete', "Analysis completed for {$repository->full_name}.");
-
-        return redirect()->route('repositories.show', $repository)
-            ->with('status', 'Analysis completed.');
+        return redirect()->route('analyses.show', $analysis)
+            ->with('status', "Analysis started for {$repository->full_name} — this page will update automatically when it finishes.");
     }
 
     public function show(Request $request, Analysis $analysis): View

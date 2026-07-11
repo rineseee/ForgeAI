@@ -2,6 +2,7 @@
 
 namespace App\Services\Analysis;
 
+use App\Jobs\RunRepositoryAnalysisJob;
 use App\Models\ActivityLogEntry;
 use App\Models\Analysis;
 use App\Models\AnalysisCategory;
@@ -25,7 +26,34 @@ class RepositoryAnalysisService
         private readonly OpenAiChatClient $openAi,
     ) {}
 
-    public function run(Repository $repository, User $triggeringUser): Analysis
+    /**
+     * Creates the Analysis row immediately (status "queued") and dispatches
+     * the actual AI work to a queued job, so the triggering HTTP request
+     * doesn't block on the OpenAI call.
+     */
+    public function queue(Repository $repository, User $triggeringUser): Analysis
+    {
+        $model = $triggeringUser->preferred_ai_model ?: config('services.openai.model');
+
+        $analysis = Analysis::create([
+            'repository_id' => $repository->id,
+            'type' => 'quality',
+            'status' => 'queued',
+            'triggered_by_user_id' => $triggeringUser->id,
+            'model_used' => $model,
+        ]);
+
+        RunRepositoryAnalysisJob::dispatch($analysis, $triggeringUser);
+
+        return $analysis;
+    }
+
+    /**
+     * Runs the actual AI analysis for an already-created Analysis row.
+     * Called from the queued job (or directly, e.g. in tests where the
+     * queue connection is "sync").
+     */
+    public function process(Analysis $analysis, User $triggeringUser): Analysis
     {
         // The OpenAI call can legitimately run longer than PHP's default 30s
         // execution limit, especially with source code included in the
@@ -33,16 +61,10 @@ class RepositoryAnalysisService
         // 180s timeout so a slow-but-successful call isn't killed first.
         set_time_limit(240);
 
-        $model = $triggeringUser->preferred_ai_model ?: config('services.openai.model');
+        $repository = $analysis->repository;
+        $model = $analysis->model_used ?: ($triggeringUser->preferred_ai_model ?: config('services.openai.model'));
 
-        $analysis = Analysis::create([
-            'repository_id' => $repository->id,
-            'type' => 'quality',
-            'status' => 'running',
-            'triggered_by_user_id' => $triggeringUser->id,
-            'model_used' => $model,
-            'started_at' => now(),
-        ]);
+        $analysis->update(['status' => 'running', 'started_at' => now()]);
 
         try {
             $context = $this->contextBuilder->build($repository, $triggeringUser, $triggeringUser->include_source_in_analysis);

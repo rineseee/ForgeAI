@@ -55,6 +55,15 @@ $overallScore = $analysis->categories->isNotEmpty() ? round($analysis->categorie
                         </div>
                     </div>
                 </x-dashboard.card>
+            @elseif (in_array($analysis->status, ['queued', 'running'], true))
+                <div x-data x-init="setTimeout(() => window.location.reload(), 5000)">
+                    <x-dashboard.card>
+                        <x-dashboard.empty-state
+                            title="Analysis in progress"
+                            :description="$analysis->status === 'queued' ? 'Waiting to start — this page will refresh automatically.' : 'The AI is reviewing this repository — this page will refresh automatically.'"
+                        />
+                    </x-dashboard.card>
+                </div>
             @elseif ($analysis->categories->isEmpty())
                 <x-dashboard.card>
                     <x-dashboard.empty-state title="No results yet" description="This analysis hasn't produced results." />

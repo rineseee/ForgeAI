@@ -80,7 +80,8 @@ class RepositoryAnalysisTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('repositories.analyze', $repository));
 
-        $response->assertRedirect(route('repositories.show', $repository));
+        $analysis = $repository->analyses()->latest('id')->first();
+        $response->assertRedirect(route('analyses.show', $analysis));
 
         $this->assertDatabaseHas('analyses', [
             'repository_id' => $repository->id,
@@ -88,7 +89,6 @@ class RepositoryAnalysisTest extends TestCase
             'model_used' => 'gpt-4o-mini',
         ]);
 
-        $analysis = $repository->analyses()->latest('id')->first();
         $this->assertCount(6, $analysis->categories);
 
         $this->assertDatabaseHas('activity_logs', [
@@ -118,7 +118,8 @@ class RepositoryAnalysisTest extends TestCase
 
         $response = $this->actingAs($user)->post(route('repositories.analyze', $repository));
 
-        $response->assertRedirect(route('repositories.show', $repository));
+        $analysis = $repository->analyses()->latest('id')->first();
+        $response->assertRedirect(route('analyses.show', $analysis));
         $this->assertDatabaseHas('analyses', [
             'repository_id' => $repository->id,
             'status' => 'failed',
