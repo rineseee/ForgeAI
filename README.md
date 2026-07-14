@@ -48,7 +48,7 @@ GITHUB_REDIRECT_URI="${APP_URL}/github/callback"
 
 ```
 OPENAI_API_KEY=
-OPENAI_MODEL=gpt-5
+OPENAI_MODEL=gpt-4o-mini
 ```
 
 `OPENAI_MODEL` accepts any Chat Completions model (`gpt-4o-mini`, `gpt-4o`, `gpt-5`, ...); users can also override it per-account in AI Preferences. Reasoning-class models (`gpt-5`) only support the default `temperature` — the client omits it automatically for those.
@@ -89,6 +89,20 @@ app/
 │   └── OpenAi/                # OpenAI chat client wrapper
 └── Support/                   # Small cross-cutting helpers (e.g. Toast)
 ```
+
+## Screenshots
+
+| Homepage | Register |
+| --- | --- |
+| ![Homepage](photo/homepage.jpeg) | ![Register page](photo/Registerpage.jpeg) |
+
+| Login | Dashboard |
+| --- | --- |
+| ![Login](photo/Login.jpeg) | ![Dashboard](photo/Dashboard.jpeg) |
+
+| Reports |
+| --- |
+| ![Reports](photo/reports.jpeg) |
 
 ## Tech stack
 
